@@ -1,0 +1,139 @@
+so lets say we have a explicit join in sqllite like :
+
+SELECT a.Field1, b.Field4, c.Field5 AS C_field
+FROM a JOIN b JOIN c;
+
+
+which if done implicitely will look like:
+
+
+SELECT a.Field1, b.Field4, c.Field5 AS C_field
+FROM a,b,c;
+
+
+this will duplicate every row in b for ever row in c. 
+every row in  a will be duplicated for every in b * every row in c.
+
+so if a.feild1 column contains:8,7
+and b.field4 contains:6,5
+and c.field5 column contains : 4,3
+
+then the output of: 
+
+SELECT a.Field1, b.Field4, c.Field5 AS C_field
+FROM a,b,c;
+
+would be :
+field1   field4     C_field
+
+8         6         4
+
+8         6         3
+
+8         5         4
+ 
+8         5         3
+
+
+
+7         6         4
+
+7         6         3
+
+7         5         4
+ 
+7         5         3
+
+
+
+
+Now in some cases u might wonna filter when this happens which can be done using the ON sql clause
+
+ON CLAUSE SIMPLY FILTERS THE RESULT OF A JOIN
+
+example:
+
+SELECT a.Field1, b.Field4, c.Field1 AS a
+FROM a JOIN b JOIN c ON b.somefield!=c.somefield;
+
+this will return no rows if there isnt a single row in b or c that abide by the condition:b.somefield!=c.somefield.
+
+
+now there are three types of joins
+
+
+one is the normal join which i just showed u which is called inner join
+
+
+before reading the other two types of joins, please note:left rights tables are written at 
+the left and right of  "LEFT JOIN" or "RIGHT JOIN", for example in the case of :
+a LEFT JOIN b  . the left table is a and the right table is b.
+
+ALSO THE TWO TYPES OF JOINS BELOW ARE USELESS UNLESS U ARE FILTERING OUT THE RESULT ROWS
+
+the second is left join which will act like a inner join unless there is a ON clause used with it, in which case:
+it will do everything the same way as a inner join but it will also add rows of the left table
+ even if they were filtered out by the ON CLAUSE,   in that case  the colomns of the right table
+will be added as  NULL in those rows 
+while the colomns from the left table will have their actual value.
+
+example:
+SELECT a.Field1, b.Field4, c.Field1 AS C_field
+FROM a LEFT JOIN b LEFT JOIN c ON C_FIELD<0;
+
+
+this will duplicate every row in b for ever row in c that obeys the conditions of: C_FIELD<2 + every row in b that wasent duplicated
+every row  in a will be duplicated for every in (b * ever row in c that obeys the conditions of: C_FIELD<2) + every row in b that wasent duplicated+ every row in a that wasent duplicated
+
+so if a.feild1 column contains:8,7
+and b.field4 contains:6,5
+and c.field5 column contains : 1,3
+
+then the output of: 
+
+SELECT a.Field1, b.Field4, c.Field1 AS C_field
+FROM a LEFT JOIN b LEFT JOIN c ON C_FIELD<0;
+
+
+would be :
+field1   field4     C_field
+
+8         6         NULL
+
+8         5         NULL
+
+7         6         NULL
+ 
+7         5         NULL
+
+in this case every row in b wasent duplicated  by the join with c
+and every row in a was duplicated twice by the join with b.
+the output of:
+SELECT a.Field1, b.Field4, c.Field1 AS C_field
+FROM a LEFT JOIN b LEFT JOIN c ON C_FIELD<2;
+
+would be :
+field1   field4     C_field
+
+8         6         1
+
+8         5         1
+
+7         6         1
+ 
+7         5         1
+
+in this case every row in b was duplicated  once  by the join with c
+and every row in a was duplicated twice by the join with b.
+
+
+
+
+the last one is a RIGHT JOIN that works the same way as a left join except for it treats the right table the same way the LEFT JOIN treats the left table and it treats the left tables the same way the left join treats the right tables.
+example:
+
+SELECT a.Field1, b.Field4, c.Field1 AS C_field
+FROM a RIGHT JOIN b ON b.Field4<2 RIGHT JOIN c ON C_FIELD<2;
+
+the table used in the ON clause has to be one of the two tables that are to the left and right of "LEFT JOIN" or "RIGHT JOIN".in the case of:
+a LEFT JOIN b   , the left table is a and the right table is b
