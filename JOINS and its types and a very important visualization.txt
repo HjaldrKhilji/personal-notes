@@ -59,7 +59,7 @@ FROM a JOIN b JOIN c ON b.somefield!=c.somefield;
 this will return no rows if there isnt a single row in b or c that abide by the condition:b.somefield!=c.somefield.
 
 
-now there are three types of joins
+now there are three types of joins that will be discussed in this document
 
 
 one is the normal join which i just showed u which is called inner join
@@ -137,3 +137,5 @@ FROM a RIGHT JOIN b ON b.Field4<2 RIGHT JOIN c ON C_FIELD<2;
 
 the table used in the ON clause has to be one of the two tables that are to the left and right of "LEFT JOIN" or "RIGHT JOIN".in the case of:
 a LEFT JOIN b   , the left table is a and the right table is b
+
+THERE ARE MORE TYPES OF JOIN THAT WONT BE DISCUSSED IN THIS DOCUMENT
