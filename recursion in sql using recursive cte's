@@ -1,0 +1,33 @@
+
+-- i will use ctes to do this recursive query, cte's are similiar to subqueries that u can make with the syntax i used below, in which i
+--made a cte named CTE_
+
+--a recursive CTE has one or more UNION. we divide the parts between the unions as individual parts and each part can do either of the 
+--below:
+--1. making new result column in the result table by selecting new columns.
+--2.by selecting a constants and naming it using the "AS" keyword.
+--3.it can reselect a column already selected in any of the previous unions then the u can recurisvely apply any operation on
+--the column in every row of the result table and the result of that recursion will be added to the result table.
+
+--example:
+
+WITH RECURSIVE CTE_ AS (
+SELECT 1 as x 
+UNION ALL 
+SELECT x+1 FROM CTE_ WHERE x<10 --any line that reference from the cte name which in this case is this line is the line that actually causes the recursion
+
+
+)
+SELECT * FROM CTE_;
+--the output of this query would output 10 rows with one column named x, the ten rows will contain values from 1 to 10
+
+--in some cases u might be able to omit the RECURSIVE keyword but please dont
+
+--i dont know weather there are any ways to make recursive queries without using ctes
+
+-- i also dont know weather u can use other clauses other than "UNION ALL" and if yes then what the performance impact will be is also unknown to me
+
+--i am adding "--" because "--" is a way to write comments in sql hence if u copy this file and past it into a sql editor then u can 
+--see the results of the example i gave above. I didnt use multi line comments to explicitly
+--show  that u can copy paste the whole file into
+-- any sql editor. i also thought that it would be cool to use single line comments only, i dont why but it does look cool to me.
