@@ -199,7 +199,7 @@ NULL      NULL
 NULL      NULL	
 
 
-the sixth one is right EXCLUSIVE JOIN; its written by basically taking a right join and 
+the seventh one is right EXCLUSIVE JOIN; its written by basically taking a right join and 
 adding a WHERE clause where the condition part says that either column from the left table  mentioned in the ON clause has to be  NULL 
 for that row to be 
 included in the resulting table; this is done  using the
