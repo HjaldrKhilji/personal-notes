@@ -1,0 +1,96 @@
+1:
+The filter clause applies a function only to the rows that fulfill the condition, inside the filter clause
+example:
+CREATE TABLE t AS SELECT generate_series(1,10) AS val;
+SELECT count(val) FILTER (WHERE val <1)
+FROM t;-- this select statement will count the amount of rows that have a value smaller than 0 in the column val
+
+
+
+2:
+The over CLAUSE simply runs a function for every row upto each row.
+
+for example:
+if a column called val, in table called t is:
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+
+and you run:
+SELECT AVG(val) OVER (order by val DESC) 
+  FROM t;
+
+then you will get 10 rows, those rows will contain the avearage of the column val upto each row:
+         avg         
+---------------------
+ 10.0000000000000000
+  9.5000000000000000
+  9.0000000000000000
+  8.5000000000000000
+  8.0000000000000000
+  7.5000000000000000
+  7.0000000000000000
+  6.5000000000000000
+  6.0000000000000000
+  5.5000000000000000
+
+in this case it in a descending order and calculated the avearage column value of val upto every row.
+the first row shows the avearage of the last row.
+the second row shows the avearage of the last two rows.
+and so on.
+if I were to use the ascending order then it would be:
+the first row shows the avearage of the first row.
+the second row shows the avearage of the first two rows.
+and so on.
+
+thanks to the OVER keyword, we can use a lot of functions that require to run a function on rows
+upto every row, some examples are  the DENSE_RANK and RANK functions.
+
+
+
+
+3:
+The WITHIN GROUP clause is useful in PostgreSQL and TimescaleDB when performing functions on ordered data. 
+It essentially allows you to pivot multiple rows of data onto a single row. This clause simplifies many operations that
+ were once only possible through the use of window functions in combination with a common table expression or CTE.
+Now you cant run all functions with the WITHIN GROUP CLAUSE, THE SAME WAY YOU DO IN CASE OF GROUP BY OR THE OVER CLAUSE; some functions
+even might not work with the WITHIN GROUP clause. Those that work MIGHT have to be require some different paremeters, I mean, I dont
+know a function that works with the WITHIN GROUP clause, without taking paremeters that are different than, those passed to the same
+function while using GROUP BY or OVER CLAUSE. Now there are some functions that only work with the WITHIN GROUP and example is:
+
+CREATE TABLE t AS SELECT generate_series(1,100) AS val, generate_series(100,100) AS vaaal;
+SELECT percentile_disc(array[0.25,0.5,0.75,1])
+    WITHIN GROUP (ORDER BY val)
+  FROM t;
+--the percentile_disc function returns a array containing the values in the val column that are above 25, 50, 75,100 percent of values
+in the val column . SQL knows the column I am running this function on is the val column because I specific it in the "ORDER BY val"
+part.
+output:
+ percentile_disc 
+-----------------
+ {25,50,75,100}
+
+
+if I were to write DESC after "ORDER BY val" in the same exact query then the output wil be values below 24,49,74,99 percent of rows;
+the output will be :
+ percentile_disc 
+-----------------
+ {76,51,26,1}
+
+
+some funtions that rely these clauses may be present in some engines only. Infact WITHIN GROUP
+clause isnt supported in all sql engine.
+
+All the queries in this file are tested on an online postgress compiler.I dont know weather these queries will work with some other
+sql engine or some other version of postgress.
+
+
+The grammer in this and some other documents may be wrong.
+
