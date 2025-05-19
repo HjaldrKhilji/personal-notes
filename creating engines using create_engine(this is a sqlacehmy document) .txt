@@ -1,0 +1,18 @@
+The main argument to create_engine is a string URL, above passed as the string "sqlite+pysqlite:///:memory:". This 
+string indicates to the contains information about:
+
+1.The database engine we are communicating with; sqlite part in the string above, specifies this part.
+2.The DBAPI that we are using;  The Python DBAPI is a third party driver that SQLAlchemy uses to interact with a particular database.
+ pysqlite part in the string above, specifies this part.
+
+3.Location where the database file is stored;"/:memory:" part in the string above, specifies this part. using "/:memory:" in this part
+means, that we want to store this database in memory, and dont want to store it in a file; in case we wanted it to store the database in
+a file, we would make a file and put the path of file in this part of the string.
+for example if the path of the file was:
+C:\Users\muneem\Documents\Personal files\professional\DATABASES\sqlachemy\aa.db
+, the engine was sqlite and the DBAPI was pysqlite then, our string would be:
+"sqlite+pysqlite:///C:\\Users\\muneem\\Documents\\Personal files\\professional\\DATABASES\\sqlachemy\\aa.db"
+I used \\ instead of \ because \\ is the escape sequence for \.
+in case you want to connect to it using a Connection String instead of a file path then sure, use the connection string.
+
+The document may have bad grammer, like all the other ones so yeah.
