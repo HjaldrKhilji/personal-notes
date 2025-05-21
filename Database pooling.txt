@@ -1,0 +1,13 @@
+database pooling is when you store database connection instead of making a new one each time for every query.
+database pooling is useful because estabilisihing a database connection obviously requires computer recources like cpu time, memory
+usage, etc.
+
+in the sqlachemy library the default size of pools is 5, but this dosent mean that 5 connections will be open and stored as soon as your 
+script runs, what it means instead, is that 5 connections will remain if 5 queries were made cocurrently. 
+
+the pool_size argument of create_engine function in sqlachemy decides the size of the pool. the argument defaults to 5 when no value
+is passed to the argument.  setting poolclass argument of the create_engine function to NULLPool will disable  pooling.max_overflow
+is the amount of connections that can be made when the amount of connections excede the pool_size argument. the connections made 
+after the pool_size is overflowed wont be alive once the query is finished.
+if the amount of cocurrent quries are more than max_overflow + pool_size
+then that query will be placed in a queue.
