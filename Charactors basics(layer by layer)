@@ -7,6 +7,7 @@ can be helpful in saving space
 if the right encoding is used, for your
 usecase.
 example: utf-8, utf-16, utf-32
+ASCII is both a charactor set and charactor encoding, tho the charactor set is seen as a subset of unicode.
 charactor local:
 convets any input object like a 
 date object into unicode charactors
@@ -15,6 +16,11 @@ for example:
 it can change the way date is written.
 example:
 fr_FR 
+charactor locales can have
+effects on file globbing, when it comes
+to ranges: a-z can include
+charactors like é if the local
+says so. 
 fonts:
 fonts tell us how the resulting text 
 looks like. 
