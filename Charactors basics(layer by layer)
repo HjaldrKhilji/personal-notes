@@ -8,9 +8,10 @@ if the right encoding is used, for your
 usecase.
 example: utf-8, utf-16, utf-32
 charactor local:
-formats single or multiple 
-charactor code points based on 
-cultural paremeters. for example:
+convets any input object like a 
+date object into unicode charactors
+based on cultural paremeters.
+for example:
 it can change the way date is written.
 example:
 fr_FR 
@@ -21,9 +22,11 @@ a good way to look at it is that
 first layer is:
 charactor sets.
 then is:
-charactor encoding.
+charactor local
+it is worthy to note that charactor
+locals simply inject unicode characters.
 then is:
-charactor local.
+charactor encoding.
 then is:
 fonts.
 
