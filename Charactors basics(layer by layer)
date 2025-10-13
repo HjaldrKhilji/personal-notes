@@ -1,6 +1,6 @@
-so a charactor representation schemes:
-represents charactors as code points.
-eg: Unicode, ASCII
+so a charactor sets:
+represents ABSTRACT charactors as code points.
+eg: Unicode, ASCII(tho ascii is a subset of unicode)
 a charactor encoding schemes:
 encodes every code point, and 
 can be helpful in saving space 
@@ -19,7 +19,7 @@ fonts tell us how the resulting text
 looks like. 
 a good way to look at it is that 
 first layer is:
-charactor representation schemes.
+charactor sets.
 then is:
 charactor encoding.
 then is:
