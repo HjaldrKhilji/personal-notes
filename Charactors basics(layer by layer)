@@ -25,6 +25,7 @@ then is:
 charactor local
 it is worthy to note that charactor
 locals simply inject unicode characters.
+it isnt a sequential part of this pipeline.
 then is:
 charactor encoding.
 then is:
