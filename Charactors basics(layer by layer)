@@ -21,6 +21,11 @@ effects on file globbing, when it comes
 to ranges: a-z can include
 charactors like é if the local
 says so. 
+this is because a-z range expansion
+is handled by charactor local.
+furthur more the charactor encoding
+might encode the resulting charactors
+,so that z comes before a.
 fonts:
 fonts tell us how the resulting text 
 looks like. 
@@ -28,7 +33,7 @@ a good way to look at it is that
 first layer is:
 charactor sets.
 then is:
-charactor local
+charactor locale
 it is worthy to note that charactor
 locals simply inject unicode characters.
 it isnt a sequential part of this pipeline.
