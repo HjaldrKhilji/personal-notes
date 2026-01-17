@@ -1,0 +1,67 @@
+With JSON: Any human can read it and find mistakes done by the software that constructed the JSON. The main
+usage of json is when the datatype of the data or the structure of data can change, in which case json is
+better. Json is useful if you want to store you're name and age, then send it over the internet. There would
+be a light load of putting the data together for your computer, but a higher load for the receiver to read it
+than a xml packet that has the datatypes defined. This course, dosent mean that the data transfer is as slower.
+
+
+With xml: xml is also easy to read, but the main usage of xml is both the fact that the data type can change and 
+the new datatype can be expressed (only if you want to). Xml is heavier to send (specially if you define the datatype), 
+and the load is normally more on the sender than the receiver when compared to JSON ( especially if the datatype is
+defined) because of the fact that you have to put everything together as a sender. Xml is also really really heavy to 
+store and send(especially if the datatypes are defined), and that load is on both the sender and receiver. It is useful 
+if you want to send a c++ container containing polymorphic objects, in which case the tag type would be a name that is
+independent of the platform, and the data would be the data needed to construct the object of that type or simply data of the type.
+
+
+With struct Binaries: You can't read these because if You open them, it might look like 00 4F 12 FF 00 00 or even bigger(and scarrier).You
+have no idea what that means without a "decoder ring" (the struct layout).Even with the struct layout, you will need some software to read 
+the binary as a human being. It is useful if the layout of the data never changes, and is even useful when it does change, for example you
+can use platform independent typenames to find out the datatype of the data in a certain location. This would still be faster than xml
+describing the type for you, since the reading overhead would be less, and in the case of xml the type casting is done by a specialized tool, 
+hence it may be a little faster, but it really isn't that fast, plus the boost is way less than the overhead of reading. 
+
+
+To send data using C/C++ structs, you probably have to make the struct a Standard layout. A struct being Standard layout will mean that programs in 
+other languages (and c++ programs compiled from another compiler or the same compiler but different version )can read this layout if those languages
+are on the same platform( this is because the Standard layout types are compatible with almost all Abi's), though you still have to make sure that the 
+languages/(c++ compiler or another compiler version of the same compiler) you are making it compatible for do have Abi's that are like "almost all Abi's) for 
+this to work (just in case). Once the Standard layout requirement is done, we have to also make sure that the alignment is set to a fixed size that is gurrentied
+to be larger than the alignment of any of the built in type members used in the struct or in the user defined class type members of the struct for any platform, 
+so say uint16 is gurrentied to have the alignment of 2 bytes at maximum on any platform, hence you use 4(4 because the alignment set must be a power of 2) bytes 
+as your alignment. A better way to set alignment is to simply use types whose sizes will never change like uint16_t, but you can use the other way as well if
+you want to use types with implementation defined sizes (types like int), but the other way would require research to figure out the max alignment size of every type.The 
+best technique to achieve alignment would be to force the compiler to 
+Align every type to 1 byte by using:
+#pragma pack(1), [[gnu::packed]], or something that does the same for your compiler, but data aligned In this way will incur performance penalties.
+Now you also have to use functions like htons and ntohs to translate the encoding of each built in type used for one that is for your platform. Now your struct is
+truly portable to share across all languages and platforms, you can skip the standard layout part, if you are only sharing it to c++ programs compiled with the same
+compiler and the same compiler version, or if the language/compiler/(compiler version of the same compiler) have the same exact ABI as the ABI that your program uses, but 
+that would be risky because a single compiler update might break the compatibility that you had. Making sure a type is a standard layout won't cost you runtime performance. 
+Any member of a user defined type in the struct also has to follow these rules, unless the data stored are actually arguments for constructing that user defined type, in which case 
+these rules apply those srguments.
+
+ Note: These techniques focus mainly on c++, so the techniques for other programming languages may differ.
+
+Note: The Best(less tiresome and complex, but maybe slightly more faster since the people making these tools PROBABLY spend more time optimizing them) way to implement C struct binary
+data transfer are using FlatBuffers(or some similar tool). I put these techniques out just to show how to do it in c++. These tools are like the standard c++ library, the code that uses
+the library is probably faster (usally is when compared to my code) because the library has more time spent on it for optimization.
+
+Version Check: When using binary structs, it is a "best practice" to include a member of a struct that shows the receiver the name of the struct, so that the receiver can know if this is the 
+struct that he was expecting.
+Security: binary parsing is prone to buffer overflows. If a struct says "the next 100 bytes are a string," but the packet only has 50 bytes, a naive C program will crash or leak memory. JSON/XML
+parsers usually handle these bounds checks for you. Also tools like FlatBuffers also handle it for you.
+
+
+Note: when checking whether a type is POD in c++, check if they are Trivial and Standard-layout, since is_pod is deprecated.
+The defintions of both of them are:
+Trivial: It is safe to use memcpy or memmove. The object has no complex constructor/destructor logic.
+Standard Layout: It is safe to communicate with other Abi's that are like "almost all Abi's". 
+Both: This is what we used to call a POD (Plain Old Data).
+
+
+
+
+Note: C struct data transfer technique really is just data transfer techniques, the reason we call it C struct is because it's easier to visualize.
+
+note:( in c++, you can use a class instead of a struct though, like it's the same thing except for members of classes that are private by default), the point is that the layout of both of them are the same.
