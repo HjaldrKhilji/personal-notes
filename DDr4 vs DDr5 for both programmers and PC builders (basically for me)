@@ -1,4 +1,6 @@
 https://www.facebook.com/share/v/17Gaz127fU/
+the video above is a linus tech tips videos
+claiming DDr5 isnt worth the price.
 He oversimplified the differences, ddr5 isn't better but rather a different architecture that is the future because implementations of most compiled languages target it.
 Game engines are a good example of why ddr5 rams are important because they are highly optimized at every level of compiler (of c++ or c#) and the optimization normally is to use cache as much as they can, which avoids: pipe stalling, cache issues caused by polymorphism, and any other performance bottlenecks caused by cache misses. This is primarily because they use data oriented designs, and rely on the sheer genius of implementation defined optimizations in the standard library and the language itself (that target caches). The love of cache by game engines means that they need ddr5 more since it has higher throughput than latency. Basically ddr5 isn't faster than ddr4 but it has a higher rate throughput.
 
