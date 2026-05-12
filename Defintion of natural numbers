@@ -1,7 +1,8 @@
-A way to define natural numbers in c++ in terms of the terms zero and successor:
+//A way to define natural numbers in c++ in terms of the terms zero and successor:
 class null{};
 class zero{
 null a;//has no capacity to represent anything, since null has no physical members.
+//one might claim that the member "a" will still take physical storage but the point is that conceptually, it cant store anything. (you (my future self) can use inheritance so that the memory footprint is also completely zero, but i find a "a" member better for this representation.
 };
 template<typename T, typename predecessor>
 struct successor: predecessor {
