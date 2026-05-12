@@ -12,5 +12,6 @@ template<typename T>
 using one= successor<T, zero>;
 template<typename T>
 using two= successor<T, one>;
+//The point is a number is any bundle containing the number of elements as that number.
 //Zero has null because a number is the number of members in the class representing it.The number of members in a class is the number of members in classes similiar to it, Such that zero has one member but no physical capacity. One has 2 members but space for one, and so on. Peanos 5 axioms are much simpler since it presupposes that one can define zero, since zero is amongst the 3 properties whose definition is presupposed.
-The issue is that these are the basics and should be taught in the day one lecture of math in school
+The issue is that these are the basics and should be taught in the day one lecture of math in school.
