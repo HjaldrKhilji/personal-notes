@@ -2,7 +2,7 @@
 class null{};
 class zero{
 null a;//has no capacity to represent anything, since null has no physical members.
-//one might claim that the member "a" will still take physical storage but the point is that conceptually, it cant store anything. (you (my future self) can use inheritance so that the memory footprint is also completely zero, but i find a "a" member better for this representation.
+//one might claim that the member "a" will still take physical storage but the point is that conceptually, it cant store anything. (you (my future self) can use inheritance so that the memory footprint is also completely zero, but i find a "a" member better for this representation. Infact, std::tuples along with some metafunctions could suit this job better, but that would make a simple concept difficult to reference.
 };
 template<typename T, typename predecessor>
 struct successor: predecessor {
