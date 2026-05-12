@@ -1,0 +1,15 @@
+A way to define natural numbers in c++ in terms of the terms zero and successor:
+class null{};
+class zero{
+null a;//has no capacity to represent anything, since null has no physical members.
+};
+template<typename T, typename predecessor>
+struct successor: predecessor {
+T a;//has a capacity of storing something
+};
+template<typename T>
+using one= successor<T, zero>;
+template<typename T>
+using two= successor<T, one>;
+//Zero has null because a number is the number of members in the class representing it.The number of members in a class is the number of members in classes similiar to it, Such that zero has one member but no physical capacity. One has 2 members but space for one, and so on. Peanos 5 axioms are much simpler since it presupposes that one can define zero, since zero is amongst the 3 properties whose definition is presupposed.
+The issue is that these are the basics and should be taught in the day one lecture of math in school
