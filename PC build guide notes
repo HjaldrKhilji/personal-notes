@@ -1,0 +1,23 @@
+Justifications: I chose a mid level motherboard, in case, a future upgrade is needed, if not then B840 motherboard, or even a A620 motherboard.
+
+Now ofcourse if a B840 or A620 motherboard is chosen and the shop keeper gives a bad one then the Cinebench will hopefully trash the whole thing before we pay a single penny.
+
+B650E chipset (a higher end one if extreme GPU and CPU updates are expected in the future)
+Ryzen 5 8400F (with a cooler that gives atleast 50 CFM of air)
+Standard/white-tier-B-to-tier-A power supply (rating must be checked online) 800W (should be 650W if future very heavy GPU/cpu upgrades aren't needed)
+AMD P30PH GPU (it's a cheap GPU, and is typically used hence should be tested and/or should have a warranty card)
+16 GB of ddr5 ram (ddr4 ram isn't supported)
+Case cooler with at least two 120mm intake fans at the front (rated around 40–50 CFM each) and one 120mm exhaust fan at the rear (rated around 40–50 CFM). As seen, the intake must be more so that there is positive pressure inside.
+A simple steal case optimized to refresh air as it should (no transparent cases or RGB lights ,unless if the RGB lights are used to warn a user or something of rise in case temprature).
+256 gb NVMe SSD (more if you aren't own a budget but minimum is 256gb as of july 2026)
+1000 gb Hard drive (HDDs have higher life span so store personal information in HDDs)
+
+
+The setup must be Infront of you so you can check it with my own eyes. You will run simply things like CPU-Z and GPU-Z.Check if the speed in task manager about ram is right. Using Cinebench for CPU testing, 3dmark for GPU testing, and memtest86(needs a bootable USB) for ram.
+Use HWMonitor while running these tests and make sure the temprature of the cpu is below 95 and GPU is below 80. Make sure both min and max are low. CrystalDiskInfo for SSD and HDD.
+
+
+To find the exact wattage required for your build, find the most heavy weight component, check it's requirements, and install that. For example a very expensive GPU may take 250Watts, but it's PSU requirement maybe 750Watts hence you must buy a 750Watts PSU.  Similarly, the motherboard should be the motherboard required by the most motherboard demanding component.
+
+Components taking in more wattage generally heat more (unless ofcourse it has fan, for example a GPU fan or CPU fan). Under powered components generally heat up more and aren't safe to run for itself sake, and for the whole system in general.
+
