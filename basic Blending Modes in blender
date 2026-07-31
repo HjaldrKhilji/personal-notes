@@ -1,0 +1,74 @@
+Note: RGB is basically made of the values of 3 components: Red, Green, and Blue, each component can be seen as a percentage or a fraction from 0 to 100% or 0.0 to 1. 
+HSV is hue, saturation, and value. Hue is an angle into a round circle of all possible colors, saturation is the intensity of the color, while value is the brightness of the color. Hue is 0 to 360(at 360, you are basically back at 0), saturation and value is in 0 to 100% or 0.0 to 1. If saturation is 0, and value in 100% then the result would be white, no matter what the hue is, and if both are 0, then the result would be black. All the blending modes below are primitive nodes that usually have to be combined to be used in any real world application of them. Also note, these blending modes take textures with multiple pixels and applies operation to multiple pixels individually unless there is a overflow(and the node isn't clamped in which case blender will try to simulate a fancy vivid effect)  and for RGB, its also on a per component basis.
+Basic Blending Modes of the mix node in blender (these modes also exist in krita except for "use alpha", which might not exist in krita):
+Mix
+Take in the foreground color, get each of it's component * the factor, then add each of the component of background color * (1-factor)
+
+Darken
+For each component: min(background, foreground)
+
+Multiply
+To decrease value of color components, decrease both colors by multiplying them with each other(think of one color as a component), this happens on a per component basis.
+
+Applications of the blend modes above are very obvious.
+
+Color Burn
+Makes foreground components smaller than a particular threshold (defined by inverse of background) are reduced to 0, and those that are bigger, are then reduces to the result of inverse/the value. Application: radically darken colors in general, it's radical since color components too small in the foreground are blackened, while the rest are shortened.
+
+Lighten
+For each color component: max(foreground, background). Application: useful to blend vivid lights or bright lights, like a flashbang or a beautiful bright light.
+
+Screen
+For each component, it increase the color by reducing the inverse of that color to inverse of color * by inverse color (imagine multiplying fractions or percentages).
+Application: brighten the colors up if they are too dark, as in the night becoming day.
+
+Color Dodge
+Same application as color burn, but in case of background color isn't inverted and overflow leads to maximizing the of colors to absolute max rather than reducing them to absolute 0.
+Application: lowering darkness in general of a foreground component to background/foreground, but maxiniming the results that are above 1. By maximizing what I mean is that if clamp option is on then blender will try to simulate brightee effects(through some modification of sorounding pixels), else clamp will simply clamp the component of that pixel to 1 (white).
+
+
+Add
+Simply add individual components of background and foreground, which is useful for simply making some parts of a image brighter, for example if you generate a procedural textures that has bright colors on some spots and you want the spots in some other texture to have those, in those spots, then you use can use add.
+
+Overlay
+Darkens components below 50% by using multiply and lighten those above it by screen blending. (Useful to increase contrast in to produce vivid imagery, for example, at night, you can make objects that have more color on them he brighter and those who don't get darker), in the case of room with dark textures be darker and those with bright textured be darker, providing a more localized glowy effect without making the whole image look bright.
+
+Soft Light
+Like Overlay, but more subtle and less noticable.
+
+Linear Light
+Applies Linear Burn blending (background + foreground - 1) if the foreground color’s lightness is below 0.5, or Linear Dodge (background + foreground) if it’s above. Basically for each component if the foreground is small then the background and foreground combination is made smaller, else it isnt. Application: increase contrast but u like overlay, it's simpler and more predictable, since the contrast in literally "minus 1" and the metric being "foreground component < 50%"
+
+Difference
+For each component, subtracts the lower value from the higher value. Application: to dark images(more direct and predictable than darken or burn), and it's like useful for sun glasses POV, I guess, to like simulate sunglasses without having to do much real time computation (useful if the other textures are lower in number. For sunglasses, other similar blending modes are also as useful, of course, and similar to them, it can be used to turn the time from day to night, but then you could also do that by hiding the main source of light from your scene, and you should unless doing that is heavier.
+
+Exclusion
+Multiplied foreground by background(this operating will decrease either background or foreground like multiplication always does when applied to a component of a RGB value), adds the result to the foregrounds, then subtracts 2*(background*foreground) from the result. The whole thing is: ( Background*foreground )+ foreground - 2(background*foreground), which evaluates to foreground-(background*foreground). This happens on a per component basis. Basically: lower the dominance of colors that are dominant in background inside the foreground by treating the background color as a percentage, so for example 1-(0.6(background)*1) is 0.4. application: lowering the values of certain components, and since this will always lead to foreground becoming smaller, the application is simply increase the contract using the background as the matric, which makes it useful for removing a bunch of colors on a bunch of pixels whose location is defined through a procedural textures or sormthing while also making sure that such exclusion is relative(background*foreground), which could make it useful for say being a part of colored sun glasses (if adding a glass object is already too heavy weight to render, especially in real time).
+
+Subtract
+Subtracts the foreground color from the background color.The same as exclusion but more direct and there is no relativity as there was with exclusion (remember the (background*foreground) making the effect of the background be also limited by how bright the foreground really is). In case of a underflow, this would result in the component becoming completely black. Application: when you simply want to reduce 
+ components by a specific value, by probably a procedural texture.
+
+Divide
+Divides the background color by the foreground color. Basically, the new color its a inverse but based on background divided by foreground, if the foreground is large relative to the foreground then foreground gets smaller, if foreground is small then if it's clamped then it becomes one, else blender will try to simulate vivid visuals by changing other pixels around it.
+
+Hue
+Combines the saturation and value of the background color with the hue of the foreground color. Useful if you want to only use the color of a texture, while keeping the saturation and value to that of the background. Usually that's useful to provide uniformity in the darkness and intensity of how objects look like throughout a scene.
+
+Saturation
+Combines the hue and value of the background color with the saturation of the foreground color. Application: if you want to import a texture only to take the intensity of the texture, in case a set of objects have to have the same color(it won't ofcourse be a single color, but rather be a single color in the sense that the colors in a single texture) and darkness but only need to differ based on saturation.
+
+Color
+Combines the value of the background color with the hue and saturation of the foreground color. This is also useful for the sake reasons that saturation and hue blending modes are useful.
+
+
+
+Value
+Combines the hue and saturation of the background color with the value of the foreground color.This is also useful for the sake reasons that saturation, color, and hue blending modes are useful.
+
+Use Alpha
+Whether to use the alpha channel of the foreground image during mixing. The alpha channel of the background image is always used. I honestly don't know what this one means.
+
+Clamp
+(this is an option not a mode)
+Clamp the output value to the [0.0, 1.0] range. If not clamped then then blender will try providing glowy effects(which though might look good) that can damage the values of other pixels.
