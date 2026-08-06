@@ -1,12 +1,15 @@
 Perlin noise:
-Basically we set up a grid, each corner of that grid has a random gradient vector with an associated offset vector (probably not random in most use cases) (size of that vector), we clamp the dot product to be between 0 and 1(the technique for doing so depends on the random number range and the implementation), and we use a pair of those dots to interpolate(so we can give them the values they should get) the values between the pair, we use interpolation, even for the values that we did randomly generate in the beginning, this is to mantain uniformity with other generated values (the numbers shown at the end is enough to tell you why since they show the kind of sigmoid function that you get). The function at 1.1 summarizes this algorithm mathematically.  For a single unit of a n dimensional grid, this process would be 2 to the power of n, where n is the amount of dimensions in the grid. This means that the complexity of this algorithm is the number of dimensions in the grid. The result is a n dimensional graph filled with values based on the derivative offset (the frequency of interpolation), a 3d graph can be used to generate 3d objects, or be mapped into a more detailed 2d textures.
+Basically we set up a grid, each corner of that grid has a random gradient vector with an associated offset vector (probably not random in most use cases) (size of that vector), and we use a pair of those dots to interpolate(so we can give them the values they should get) the values between the pair, we use interpolation, even for the values that we did randomly generate in the beginning, this is to mantain uniformity with other generated values (the numbers shown at the end is enough to tell you why since they show the kind of sigmoid function that you get). The function at 1.1 summarizes this algorithm mathematically.  For a single unit of a n dimensional grid, this process would be 2 to the power of n, where n is the amount of dimensions in the grid. This means that the complexity of this algorithm is the number of dimensions in the grid. The result is a n dimensional graph filled with values based on the derivative offset (the frequency of interpolation), a 3d graph can be used to generate 3d objects, or be mapped into a more detailed 2d textures.
 
 
 Perlin noise algorithm function:
 (1.1) F(x)= a0+smootstep(x)*(a1-a0)
 a1 and a0 are the dot products of gradients vectors and offset vectors at intersection points in graphs.
 
-
+smoothstep is a sigmoid function that returns 0 on the input of 0 and 1 on the input of 1, and
+if the input is in between then the result is:
+3x²-2x³ (the way a code i found online computes this in practice in c/c++ is: x * x * (3.0f - 2.0f * x)
+smooth step relies on clamping the input in [0-1] before you feed it in.
 Enumeration of the function Smoothstep(x):
 [0.9-0.1]:
 0 and 1 would output 0 and 1 respectively: 
