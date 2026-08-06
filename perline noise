@@ -1,0 +1,50 @@
+Perlin noise:
+Basically we set up a grid, each corner of that grid has a random gradient vector with an associated offset vector (probably not random in most use cases) (size of that vector), we clamp the dot product to be between 0 and 1(the technique for doing so depends on the random number range and the implementation), and we use a pair of those dots to interpolate(so we can give them the values they should get) the values between the pair, we use interpolation, even for the values that we did randomly generate in the beginning, this is to mantain uniformity with other generated values (the numbers shown at the end is enough to tell you why since they show the kind of sigmoid function that you get). The function at 1.1 summarizes this algorithm mathematically.  For a single unit of a n dimensional grid, this process would be 2 to the power of n, where n is the amount of dimensions in the grid. This means that the complexity of this algorithm is the number of dimensions in the grid. The result is a n dimensional graph filled with values based on the derivative offset (the frequency of interpolation), a 3d graph can be used to generate 3d objects, or be mapped into a more detailed 2d textures.
+
+
+Perlin noise algorithm function:
+(1.1) F(x)= a0+smootstep(x)*(a1-a0)
+a1 and a0 are the dot products of gradients vectors and offset vectors at intersection points in graphs.
+
+
+Enumeration of the function Smoothstep(x):
+[0.9-0.1]:
+0 and 1 would output 0 and 1 respectively: 
+0.972 0.896 0.784 0.648 0.5 0.352 0.216 0.104 0.028
+
+0.972-0.896 = 0.076
+0.896-0.784=0.112
+0.784-0.648=0.136
+0.648-0.5=0.148
+0.5-0.352=0.148
+0.352-0.216=0.136
+0.216-0.104=0.112
+0.104-0.028=0.076
+Absolute values of the following: 
+0.076-0.112=0.036
+0.112-0.136=-0.024
+0.136-0.148=-0.012
+0.148-0.148=0
+
+
+[0.99-0.91]:
+0.999702  0.998816  0.997354  0.995328 0.99275  0.989632 0.985986 0.981824 0.977158
+
+0.999702 -0.998816=0.000886
+0.998816 -0.997354=0.001462
+0.997354 -0.995328=0.002026
+ 0.995328 -0.99275=0.002578
+0.99275-0.989632=0.003118
+0.989632-0.985986=0.003646
+0.985986-0.981824=0.004162
+0.981824-0.977158=0.004666
+Absolute values of the following: 
+0.000886-0.001462=0.000576
+0.001462-0.002026= 0.000564
+0.002026-0.002578=0.000552
+0.002578-0.003118= 0.00054
+0.003118-0.003646=0.000528
+0.003646-0.004162=0.000516
+0.004162-0.004666=0.000504
+
+Change Acceleration by the value 12 is a characteristic regardless of what the magnitude is, except for the ones in cases like 0.96 to 0.95, where the drop in change in acceleration is unlike any other, which is primarily because it's a sigmoid but unlike 0.6 to 0.5 where the change in acceleration constant, here it isn't since sigmoid because (in my opinion), function fails to express sigmoid capabilities when transitioning for. 0.6 to 0.5.
