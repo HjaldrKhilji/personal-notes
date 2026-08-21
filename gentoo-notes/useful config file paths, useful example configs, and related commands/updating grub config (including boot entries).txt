@@ -1,0 +1,38 @@
+/efi/EFI/Gentoo/grub.cfg
+--after changing, you need to run grub-mkconfig -o /efi/EFI/Gentoo/grub.cfg
+--or if using installkernel:
+FILE /etc/env.d/99grub
+GRUB_CFG=/efi/EFI/Gentoo/grub.cfg
+then run:
+env-update
+
+--three example entries would be(notice that the last two are submenu entries):
+
+menuentry 'linux' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-simple-a1f3e11c-226a-4875-a76e-687a0ccb1862' {
+                load_video
+                insmod chain
+                insmod part_gpt
+                insmod fat
+                search --no-floppy --fs-uuid --set=root 7065-BAB0
+                echo    'Loading UKI 6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi ...'
+                chainloader     /EFI/Linux/linux-6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi root=UUID=a1f3e11c-226a-4875-a76e-687a0ccb1862 ro
+        }
+submenu 'Advanced options for linux' $menuentry_id_option 'gnulinux-advanced-a1f3e11c-226a-4875-a76e-687a0ccb1862' {
+        menuentry 'linux, with UKI 6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'gnulinux-6.18.43-ge>
+                load_video
+                insmod chain
+                insmod part_gpt
+                insmod fat
+                search --no-floppy --fs-uuid --set=root 7065-BAB0
+                echo    'Loading UKI 6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi ...'
+                chainloader     /EFI/Linux/linux-6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi root=UUID=a1f3e11c-226a-4875-a76e-687a0ccb1862 ro
+        }
+        menuentry 'linux, with UKI 6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi (recovery mode)' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'gnu>
+                load_video
+                insmod chain
+                insmod part_gpt
+                insmod fat
+                search --no-floppy --fs-uuid --set=root 7065-BAB0
+                echo    'Loading UKI 6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi ...'
+                chainloader     /EFI/Linux/linux-6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi root=UUID=a1f3e11c-226a-4875-a76e-687a0ccb1862 ro single
+        }
