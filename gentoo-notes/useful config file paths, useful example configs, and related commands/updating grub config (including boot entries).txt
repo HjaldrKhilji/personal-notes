@@ -1,10 +1,5 @@
 /efi/EFI/Gentoo/grub.cfg
---after changing, you need to run grub-mkconfig -o /efi/EFI/Gentoo/grub.cfg
---or if using installkernel:
-FILE /etc/env.d/99grub
-GRUB_CFG=/efi/EFI/Gentoo/grub.cfg
-then run:
-env-update
+--after changing, you dont need to run anything!!!!!
 
 --three example entries would be(notice that the last two are submenu entries):
 
