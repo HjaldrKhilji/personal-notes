@@ -1,7 +1,7 @@
 #main commands:
-sudo dracut --force --uefi  --kernel-image /HDD_partitions/personal_files/downloads/vmlinuz64  --include /HDD_partitions/personal_files/downloads/core.gz /core.gz --include /HDD_partitions/personal_files/downloads/modules64.gz /modules64.gz   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Linux/tinycore.efi
+sudo dracut --force --uefi  --kernel-image /HDD_partitions/personal_files/downloads/vmlinuz64  --include /HDD_partitions/personal_files/downloads/core.gz /core.gz --include /HDD_partitions/personal_files/downloads/modules64.gz /modules64.gz   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Non-Gentoo-kernels-images/tinycore.efi
 #or for slitaz:
-sudo dracut --force --uefi  --kernel-image /HDD_partitions/heavy_working_files/bzImage   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Linux/slitaz.efi
+sudo dracut --force --uefi  --kernel-image /HDD_partitions/heavy_working_files/bzImage   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Non-Gentoo-kernels-images/slitaz.efi
 #Last night I felt very tempted to install tiny core linux, but then asked myself how to do it, and AI told me that I cant do it without needing a usb or a DVD, hence I decided to spend the day researching, and found this blessing:
 #https://www.man7.org/linux/man-pages/man8/dracut.8.html
 #Now ofcourse you will have to extract the rootfs.gz:
@@ -19,11 +19,11 @@ menuentry 'tiny-core linux' --class linux --class gnu-linux --class gnu --class 
                 insmod fat
                 search --no-floppy --fs-uuid --set=root b1ad027f-e3fc-4937-85ea-1a34a0b61a92
                 echo    'Loading UKI tinycore.efi ...'
-		chainloader	/EFI/Linux/tinycore.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+		chainloader	/EFI/Non-Gentoo-kernels-images/tinycore.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 
         }
 
-#the UUID="a1f3e11c-226a-4875-a76e-687a0ccb1862" in the line below is only necessery if there is a seperate var partiton:
+#the UUID="a1f3e11c-226a-4875-a76e-687a0ccb1862" in the line below, for example, is only necessery if there is a seperate var partiton:
 #		chainloader	/EFI/Linux/linux-6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi root=UUID=a1f3e11c-226a-4875-a76e-687a0ccb1862 ro single net.ifnames=1 quiet splash resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 #the command for slitaz is almost exactly similar except for the partition names and menuid(according to AI the numeric value is uuid4 hence I also used uuid4 for the sake of following the common conventions), along with the menuentry string and loading string:
 menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'linux-slitaz-af379d11-1bb3-4914-84fd-ddbe92ca0962' {
@@ -33,7 +33,7 @@ menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os 
                 insmod fat
                 search --no-floppy --fs-uuid --set=root d077fd65-c05a-48f4-9f35-ed34f140dede
                 echo    'Loading UKI slitaz.efi ...'
-                chainloader     /EFI/Linux/slitaz.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+                chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 
         }
 
