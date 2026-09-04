@@ -23,7 +23,7 @@ menuentry 'tiny-core linux' --class linux --class gnu-linux --class gnu --class 
 
         }
 
-#the UUID="a1f3e11c-226a-4875-a76e-687a0ccb1862" in the line below, for example, is only necessery if there is a seperate var partiton:
+#the UUID="a1f3e11c-226a-4875-a76e-687a0ccb1862" in the line below, for example, is only necessery if there is a seperate var partiton(because my default gentoo boot entries includes it as the root UUID:
 #		chainloader	/EFI/Linux/linux-6.18.43-gentoo-dist-fe9c81f34f6ab11e2dba0c476a82ecbb.efi root=UUID=a1f3e11c-226a-4875-a76e-687a0ccb1862 ro single net.ifnames=1 quiet splash resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 #the command for slitaz is almost exactly similar except for the partition names and menuid(according to AI the numeric value is uuid4 hence I also used uuid4 for the sake of following the common conventions), along with the menuentry string and loading string:
 menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'linux-slitaz-af379d11-1bb3-4914-84fd-ddbe92ca0962' {
@@ -33,9 +33,11 @@ menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os 
                 insmod fat
                 search --no-floppy --fs-uuid --set=root d077fd65-c05a-48f4-9f35-ed34f140dede
                 echo    'Loading UKI slitaz.efi ...'
-                chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+                chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi   ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 
         }
+
+
 
 
 
