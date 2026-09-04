@@ -40,7 +40,6 @@ menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os 
 
 
 #then run:
-sudo grub-install --efi-directory=/efi
 grub-mkconfig -o /boot/grub/grub.cfg
 
 
