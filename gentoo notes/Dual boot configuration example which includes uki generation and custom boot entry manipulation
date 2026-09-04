@@ -32,13 +32,12 @@ menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os 
                 insmod part_gpt
                 insmod fat
                 search --no-floppy --fs-uuid --set=root d077fd65-c05a-48f4-9f35-ed34f140dede
-                echo    'Loading UKI tinycore.efi ...'
-                chainloader     /EFI/Linux/tinycore.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+                echo    'Loading UKI slitaz.efi ...'
+                chainloader     /EFI/Linux/slitaz.efi  ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
 
         }
 
-#then run:
-sudo grub-mkconfig -o /efi/EFI/Gentoo/grub.cfg
+
 
 
 
