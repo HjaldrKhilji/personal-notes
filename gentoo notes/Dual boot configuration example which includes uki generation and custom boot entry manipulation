@@ -1,30 +1,20 @@
-#main commands:
-sudo dracut --force --uefi  --kernel-image /HDD_partitions/personal_files/downloads/vmlinuz64  --include /HDD_partitions/personal_files/downloads/core.gz /core.gz --include /HDD_partitions/personal_files/downloads/modules64.gz /modules64.gz   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Non-Gentoo-kernels-images/tinycore.efi
-#or for slitaz:
-sudo dracut --force --uefi  --kernel-image /HDD_partitions/heavy_working_files/bzImage   --kernel-cmdline "ro quiet resume=PARTUUID=89d25cfd-8f81-42d7-a80b-439323a04033"  /efi/EFI/Non-Gentoo-kernels-images/slitaz.efi
+#intro:
 #Last night I felt very tempted to install tiny core linux, but then asked myself how to do it, and AI told me that I cant do it without needing a usb or a DVD, hence I decided to spend the day researching, and found this blessing:
 #https://www.man7.org/linux/man-pages/man8/dracut.8.html
+#after trying however, I realized that the space on my nvme is too low to share between tinycore and slatiz, hence I figured that slatiz alone is the easier option since its gonna leave me some space to actually operate it.
+#installation:
+#the first thing is to make a uki image since most of us use uefi systems with secure boot enabled
+ sudo dracut --force --uefi --no-hostonly   --modules "base i18n"   --drivers "xhci_hcd usbhid hid_generic atkbd"   --kernel-image /HDD_partitions/heavy_working_files/bzImage   --kernel-cmdline "root=/dev/null rw quiet splash autologin"   /efi/EFI/Non-Gentoo-kernels-images/slitaz.efi   --uefi-splash-image /HDD_partitions/heavy_working_files/splash.xpm
 #Now ofcourse you will have to extract the rootfs.gz:
-#extra rootfs's ( the file thats inside rootfs.gz ) content to the respective partition that is to be the root of the other system, in my case tiny core:
+#(correctly) extract rootfs's ( the file thats inside rootfs.gz ) content to the respective partition that is to be the root of the other system, in my case tiny core:
 #add this to /etc/grub.d/40_custom:
 #!/bin/sh
 exec tail -n +3 $0
 # This file provides an easy way to add custom menu entries.  Simply type the
 # menu entries you want to add after this comment.  Be careful not to change
 # the 'exec tail' line above.
-menuentry 'tiny-core linux' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'linux-tinycore-808536ca-a857-444e-84c4-309ba5b6b525' {
-                load_video
-                insmod chain
-                insmod part_gpt
-                insmod fat
-                search --no-floppy --fs-uuid --set=root 7065-BAB0
-                echo    'Loading UKI tinycore.efi ...'
-                chainloader     /EFI/Non-Gentoo-kernels-images/tinycore.efi root=UUID=b1ad027f-e3fc-4937-85ea-1a34a0b61a92 ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
-
-        }
 #--set=root 7065-BAB0 defines the efi partition
 #root=UUID=uuid specifies the exact root partition that will be used as root
-#the command for slitaz is almost exactly similar except for the partition names and menuid(according to AI the numeric value is uuid4 hence I also used uuid4 for the sake of following the >
 menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os $menuentry_id_option 'linux-slitaz-af379d11-1bb3-4914-84fd-ddbe92ca0962' {
                 load_video
                 insmod chain
@@ -32,13 +22,11 @@ menuentry 'slitaz linux' --class linux --class gnu-linux --class gnu --class os 
                 insmod fat
                 search --no-floppy --fs-uuid --set=root 7065-BAB0
                 echo    'Loading UKI slitaz.efi ...'
-                chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi  root=UUID=d077fd65-c05a-48f4-9f35-ed34f140dede ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+                #chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi  root=UUID=d077fd65-c05a-48f4-9f35-ed34f140dede ro quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033'
+                chainloader     /EFI/Non-Gentoo-kernels-images/slitaz.efi rw root=/dev/null quiet resume=PARTUUID='89d25cfd-8f81-42d7-a80b-439323a04033' lang=C kmap=uk vga=normal autologin
+                initrd /boot/rootfs.gz
 
         }
-
-
-
-
 #then run:
 grub-mkconfig -o /boot/grub/grub.cfg
 
