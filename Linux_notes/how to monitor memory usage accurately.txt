@@ -1,0 +1,24 @@
+In linux, memory is divided between nodes, specifically NUMA nodes, on non NUMA PC's however, the linux system only reports 1 node called node 0, since there arent multiple numa memory nodes, just a single memory unit (even if
+there are many ram slots with ram inserted). Each NUMA node has zones inside it, generally the main zones are:
+ZONE_DMA 	Legacy 16-bit DMA devices 	0 - 16MB
+ZONE_DMA32 	32-bit DMA devices 	16MB - 4GB
+ZONE_NORMAL 	Regular kernel allocations 	Above 4GB
+ZONE_MOVABLE 	Migratable pages (memory hotplug, isolation) 	Configurable (zero on the typical PC)
+To find if mem usage is serious, one can use two techniques, the first tells if memory is fragmented:
+1.cat /proc/buddyinfo
+this command prints the buddys free, the ones at the right are buddys with higher number of pages (1^n, where n is the position starting with 0 on the left). Basically, if the numbers on the right are smaller than those on left, then you have high memory fragmentation which is usually due to high memory usage.
+The second tells you the memory availability details in each zone of each NUMA node, this availability detail (shown by the "free" field in the command) is relative to high, low, min fields:
+2.cat /proc/zoneinfo
+here, below every "Node 0, zone   Normal"(below every zone name for every zone in every NUMA node) you will see the free pages, an high field, low field, and min field:
+Node 0, zone   Normal
+  pages free     837821
+        boost    0
+        min      14079
+        low      17598
+        high     21117
+the free pages show the amount of pages that are free, min is the minimum limit, below which the kernel agressively starts swaping memory, and if there is no swap:
+1.the kernel will either empty the cache(file contents or any other asset thats cacheable in the memory).
+2.the kernel will either evicting code (not data) from the memory, and only let the code of those processes be in memory that are already executing. (this would potentially raise IO usage which in turn would potentially raise cpu usage)
+3.the kernel might also kill the process eating the most memory.
+4. Or the kernel will do a mixture of all of the above.
+when the amount of free pages are between min and low, then the kernel simply launches the kswapd kernel thread which is a kernel thread running in kernel context. That kernel threds starts swaping (but not as agressively as if it was below min, and in case there is no swap, the kernel dosent outright panic and start evicting code, cache, or killing processes). If the number of free pages are between low and high because the system recovered from the state in which free pages were below low, then the kswapd continues to  execute until the amount of free pages are above high, whereas if the number of free pages are between low and high after coming down from high, then the system would function as it would if it were above high (aside from potential performance issues related to memory fragmented ofcourse). If the numeber of free pages are above high then the kernel starts angressively caching everything it can in ram because it will be operating with the philosiphy of was "free ram is wasted ram".
