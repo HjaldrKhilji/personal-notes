@@ -22,3 +22,9 @@ the free pages show the amount of pages that are free, min is the minimum limit,
 3.the kernel might also kill the process eating the most memory.
 4. Or the kernel will do a mixture of all of the above.
 when the amount of free pages are between min and low, then the kernel simply launches the kswapd kernel thread which is a kernel thread running in kernel context. That kernel threds starts swaping (but not as agressively as if it was below min, and in case there is no swap, the kernel dosent outright panic and start evicting code, cache, or killing processes). If the number of free pages are between low and high because the system recovered from the state in which free pages were below low, then the kswapd continues to  execute until the amount of free pages are above high, whereas if the number of free pages are between low and high after coming down from high, then the system would function as it would if it were above high (aside from potential performance issues related to memory fragmented ofcourse). If the numeber of free pages are above high then the kernel starts angressively caching everything it can in ram because it will be operating with the philosiphy of was "free ram is wasted ram".
+A shorter summary of these 3 fields would be (by https://kernel-internals.org/mm/zone-reclaim/):
+The three main levels:
+Watermark 	Meaning
+WMARK_MIN 	Last resort. Direct reclaim stalls allocating processes until free pages rise above this level.
+WMARK_LOW 	Background threshold. Falling below here wakes kswapd.
+WMARK_HIGH 	Target. kswapd reclaims until free pages reach this level, then sleeps.
