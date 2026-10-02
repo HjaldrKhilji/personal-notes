@@ -1,0 +1,10 @@
+note: ip tables are obsolete though the concept "iptable hooks" arent since they exist on a netfilter level.
+iptable hooks:
+The Five Netfilter Hooks
+• PREROUTING: Triggered as soon as a packet arrives and enters the network stack, before any routing decision is made (used for Destination NAT / DNAT).
+• INPUT: Triggered when a packet's destination IP matches the local machine itself, meaning it is delivered to local user-space processes.
+• FORWARD: Triggered when a packet is not addressed to the local machine, but is instead routed or passed through to another network interface.
+• OUTPUT: Triggered when a local application or process generates an outgoing network packet before it undergoes a routing decision.
+• POSTROUTING: Triggered right before a packet physically leaves the network interface, after all routing decisions are finalized (used for Source NAT / SNAT)
+changing PREROUTING is probably helping for wireless networking sniffing (where you probably want to open it for all), but harmful for performance in general ofcourse ( even if you were ignroing those packets becuase letting them in alone is a strain). POSTROUTING is useful if I want to log routing decisions and shit like how do my internet packets look like.
+
