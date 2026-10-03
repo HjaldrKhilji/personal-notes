@@ -1,3 +1,3 @@
 Transport Header Offset (thoff) is the offset to the transport layer header of a packet, for example the tcp header of a packet.
 hotdrop: hotdrop exists so one can ask the kernel to immediately drop the packet by setting it. netfilter modules can make use of it to filter out packets, this is how obsolete iptables or the (newer) netifrc drops matches or how those that arent allowed by default are dropped by some other default settings in a build in module of netfilter. This in most cases not for security purposes, but rather for a mix of performance(cutting out unnecessary traffic), reducing power consumption, etc.
-
+netfilter tables:netfilter tables dictate the order, help the respective netfilter module to know the application, and also convey intent
