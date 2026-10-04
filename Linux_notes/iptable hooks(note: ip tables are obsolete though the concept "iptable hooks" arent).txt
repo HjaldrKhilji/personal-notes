@@ -1,6 +1,7 @@
 note: ip tables are obsolete though the concept "iptable hooks" arent since they exist on a netfilter level.
 iptable hooks:
 The Five Netfilter Hooks
+• BROUTING: Triggered based on layer 2 headers (for example mac addresses).
 • PREROUTING: Triggered as soon as a packet arrives and enters the network stack, before any routing decision is made (used for Destination NAT / DNAT).
 • INPUT: Triggered when a packet's destination IP matches the local machine itself, meaning it is delivered to local user-space processes.
 • FORWARD: Triggered when a packet is not addressed to the local machine, but is instead routed or passed through to another network interface.
